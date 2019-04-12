@@ -45,8 +45,4 @@ impl Connection for TcpStreamWrapper {
         self.connected = false;
         Ok(())
     }
-
-    fn set_unwanted(&self) -> () {
-        std::unimplemented!()
-    }
 }
