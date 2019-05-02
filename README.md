@@ -1,6 +1,5 @@
-# cueball-tcp-stream-connection
+# cueball-postgres-connection
 
 ## About
 
-This is an implementation of the [cueball](https://github.com/joyent/rust-cueball) `Connection` trait for `TcpStream` from
-the rust standard library.
+This is an implementation of the [cueball](https://github.com/joyent/rust-cueball) `Connection` trait for`postgres::Connection` from the [rust-postgres](https://docs.rs/postgres) crate.

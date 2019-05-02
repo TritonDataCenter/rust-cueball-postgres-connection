@@ -1,8 +1,15 @@
 [package]
-name = "cueball-tcp-stream-connection"
+name = "cueball-postgres-connection"
 version = "0.1.0"
 authors = ["Kelly McLaughlin <kelly.mclaughlin@joyent.com>"]
 edition = "2018"
 
 [dependencies]
-cueball = { git = 'https://github.com/joyent/rust-cueball' }
+cueball = { path = "/home/kelly/joyent/repos/rust-cueball" }
+postgres = "0.15.2"
+
+[dev-dependencies]
+# cueball-static-resolver = { git = "https://github.com/joyent/cueball-static-resolver" }
+cueball-static-resolver = { path = "/home/kelly/joyent/repos/cueball-static-resolver" }
+slog = "2.4.1"
+slog-term = "2.4.0"
