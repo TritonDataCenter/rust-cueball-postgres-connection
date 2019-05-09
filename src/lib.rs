@@ -2,14 +2,13 @@
  * Copyright 2019 Joyent, Inc.
  */
 
-use std::error::Error as StdError;
 use std::ops::{Deref, DerefMut};
 
+use postgres;
 use postgres::{Client, NoTls};
 
 use cueball::backend::Backend;
 use cueball::connection::Connection;
-use cueball::error::Error;
 
 pub struct PostgresConnection {
     pub connection: Option<Client>,
@@ -37,21 +36,16 @@ impl PostgresConnection {
 }
 
 impl Connection for PostgresConnection {
-    fn connect(&mut self) -> Result<(), Error> {
-        match Client::connect(&self.url, NoTls) {
-            Ok(connection) => {
-                self.connection = Some(connection);
-                self.connected = true;
-                Ok(())
-            }
-            Err(err) => {
-                // TODO: Better error handling
-                Err(Error::CueballError(err.description().to_string()))
-            }
-        }
+    type Error = postgres::Error;
+
+    fn connect(&mut self) -> Result<(), Self::Error> {
+        let connection =  Client::connect(&self.url, NoTls)?;
+        self.connection = Some(connection);
+        self.connected = true;
+        Ok(())
     }
 
-    fn close(&mut self) -> Result<(), Error> {
+    fn close(&mut self) -> Result<(), Self::Error> {
         self.connection = None;
         self.connected = false;
         Ok(())
