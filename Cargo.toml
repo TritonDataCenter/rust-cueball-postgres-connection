@@ -6,7 +6,9 @@ edition = "2018"
 
 [dependencies]
 cueball = { git = "https://github.com/joyent/rust-cueball" }
+native-tls = "0.2.3"
 postgres = "0.16.0-rc.1"
+tokio-postgres-native-tls = "0.1.0-rc.1"
 
 [dev-dependencies]
 cueball-static-resolver = { git = "https://github.com/joyent/cueball-static-resolver" }
