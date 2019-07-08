@@ -4,9 +4,12 @@
 
 use std::ops::{Deref, DerefMut};
 
-use native_tls::{Certificate, TlsConnector};
+use native_tls::Certificate as NativeCertificate;
+use native_tls::Error as NativeError;
+use native_tls::TlsConnector;
 use postgres;
 use postgres::{Client, NoTls};
+use serde_derive::Deserialize;
 use tokio_postgres_native_tls::MakeTlsConnector;
 
 use cueball::backend::Backend;
@@ -150,13 +153,19 @@ impl From<PostgresConnectionConfig> for String
     }
 }
 
-#[derive(Debug, Clone)]
-pub(self) enum TlsConnectMode {
+#[derive(Debug, Clone, Deserialize)]
+pub enum TlsConnectMode {
+    #[serde(alias = "disable")]
     Disable,
+    #[serde(alias = "allow")]
     Allow,
+    #[serde(alias = "prefer")]
     Prefer,
+    #[serde(alias = "require")]
     Require,
+    #[serde(alias = "verify-ca")]
     VerifyCa,
+    #[serde(alias = "verify-full")]
     VerifyFull
 }
 
@@ -172,6 +181,12 @@ impl ToString for TlsConnectMode {
         }
     }
 }
+
+/// An X509 certificate.
+pub type Certificate = NativeCertificate;
+
+/// An error returned from the TLS implementation.
+pub type CertificateError = NativeError;
 
 #[derive(Clone)]
 pub struct TlsConfig
