@@ -44,10 +44,11 @@ fn main() {
     };
     let connection_creator = PostgresConnection::connection_creator(pg_config);
     let pool_opts = ConnectionPoolOptions {
-        maximum: 5,
+        max_connections: Some(5),
         claim_timeout: None,
-        log: log,
+        log: Some(log),
         rebalancer_action_delay: None,
+        decoherence_interval: None
     };
 
     let _pool = ConnectionPool::new(pool_opts, resolver, connection_creator);
