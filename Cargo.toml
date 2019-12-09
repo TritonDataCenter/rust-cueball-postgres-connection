@@ -5,14 +5,15 @@ authors = ["Kelly McLaughlin <kelly.mclaughlin@joyent.com>"]
 edition = "2018"
 
 [dependencies]
-cueball = { path = '../rust-cueball' }
+cueball = { git = 'https://github.com/joyent/rust-cueball', branch = "MANTA-4630" }
 native-tls = "0.2.3"
 postgres = "0.16.0-rc.1"
 serde = "1.0.84"
 serde_derive = "1.0.84"
 tokio-postgres-native-tls = "0.1.0-rc.1"
+unicode-normalization = "=0.1.5"
 
 [dev-dependencies]
-cueball-static-resolver = { path = "../cueball-static-resolver", tag = "v0.2.0" }
+cueball-static-resolver = { git = "https://github.com/joyent/cueball-static-resolver", branch = "MANTA-4630" }
 slog = "2.4.1"
 slog-term = "2.4.0"
