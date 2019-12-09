@@ -62,6 +62,17 @@ impl Connection for PostgresConnection
         Ok(())
     }
 
+    fn is_valid(&mut self) -> bool {
+        match self.connection.as_mut().unwrap().simple_query("").map(|_| ()) {
+            Ok(_) => true,
+            Err(_) => false
+        }
+    }
+
+    fn has_broken(&mut self) -> bool {
+        self.connection.as_mut().unwrap().is_closed()
+    }
+
     fn close(&mut self) -> Result<(), Self::Error> {
         self.connection = None;
         self.connected = false;
@@ -266,5 +277,4 @@ fn make_tls_connector(tls_config: &TlsConfig) -> Option<MakeTlsConnector>
             Some(MakeTlsConnector::new(connector))
         }
     }
-
 }
