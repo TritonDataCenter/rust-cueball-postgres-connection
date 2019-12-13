@@ -12,11 +12,7 @@ use slog::{o, Drain, Logger};
 
 use cueball::connection_pool::types::ConnectionPoolOptions;
 use cueball::connection_pool::ConnectionPool;
-use cueball_postgres_connection::{
-    PostgresConnection,
-    PostgresConnectionConfig,
-    TlsConfig
-};
+use cueball_postgres_connection::{PostgresConnection, PostgresConnectionConfig, TlsConfig};
 use cueball_static_resolver::StaticIpResolver;
 
 fn main() {
@@ -40,7 +36,7 @@ fn main() {
         port: None,
         database: Some(database.into()),
         application_name: Some(application_name.into()),
-        tls_config: TlsConfig::disable()
+        tls_config: TlsConfig::disable(),
     };
     let connection_creator = PostgresConnection::connection_creator(pg_config);
     let pool_opts = ConnectionPoolOptions {
@@ -48,7 +44,7 @@ fn main() {
         claim_timeout: None,
         log: Some(log),
         rebalancer_action_delay: None,
-        decoherence_interval: None
+        decoherence_interval: None,
     };
 
     let _pool = ConnectionPool::new(pool_opts, resolver, connection_creator);

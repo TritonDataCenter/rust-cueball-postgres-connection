@@ -128,8 +128,7 @@ impl From<PostgresConnectionConfig> for String {
 
         let slash = if database.is_empty() { "" } else { "/" };
 
-        let application_name =
-            config.application_name.unwrap_or_else(|| "".into());
+        let application_name = config.application_name.unwrap_or_else(|| "".into());
         let question_mark = "?";
 
         let app_name_param = if application_name.is_empty() {
@@ -253,19 +252,15 @@ fn make_tls_connector(tls_config: &TlsConfig) -> Option<MakeTlsConnector> {
     let m_cert = tls_config.certificate.clone();
     match tls_config.mode {
         TlsConnectMode::Disable => None,
-        TlsConnectMode::Allow | TlsConnectMode::Prefer => {
-            m_cert.and_then(|cert| {
-                let connector = TlsConnector::builder()
-                    .add_root_certificate(cert)
-                    .build()
-                    .unwrap();
-                let connector = MakeTlsConnector::new(connector);
-                Some(connector)
-            })
-        }
-        TlsConnectMode::Require
-        | TlsConnectMode::VerifyCa
-        | TlsConnectMode::VerifyFull => {
+        TlsConnectMode::Allow | TlsConnectMode::Prefer => m_cert.and_then(|cert| {
+            let connector = TlsConnector::builder()
+                .add_root_certificate(cert)
+                .build()
+                .unwrap();
+            let connector = MakeTlsConnector::new(connector);
+            Some(connector)
+        }),
+        TlsConnectMode::Require | TlsConnectMode::VerifyCa | TlsConnectMode::VerifyFull => {
             let cert = m_cert.expect(
                 "A certificate is required for require, \
                  verify-ca, and verify-full SSL modes",
